@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 export default function LoginUseState() {
   /* const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState(""); */
@@ -11,19 +12,15 @@ export default function LoginUseState() {
     email: false,
     password: false,
   });
+  const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
+  const passwordIsInvalid =
+    didEdit.password && enteredValues.password.trim().length < 6;
   // Submit
   function handleSubmit(evt) {
     evt.preventDefault();
     console.log(enteredValues);
   }
-  // Email
-  /*  function handleEmailChange(evt) {
-    setEnteredEmail(evt.target.value);
-  } */
-  // Password
-  /* function handlePasswordChange(evt) {
-    setEnteredPassword(evt.target.value);
-  } */
+
   // All values in once.
   function handleInputChange(id, value) {
     // Parenthesis pour do an Object return.
@@ -50,33 +47,28 @@ export default function LoginUseState() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onBlur={() => handleInputValidation("email")}
-            onChange={(evt) => handleInputChange("email", evt.target.value)}
-            value={enteredValues.email}
-          />
-          {isInvalidEmail && (
-            <div className="control-error">
-              Please enter a valid email address
-            </div>
-          )}
-        </div>
-
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            onChange={(evt) => handleInputChange("password", evt.target.value)}
-            value={enteredValues.password}
-          />
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          name="email"
+          onBlur={() => handleInputValidation("email")}
+          onChange={(evt) => handleInputChange("email", evt.target.value)}
+          value={enteredValues.email}
+          error={emailIsInvalid && "Please enter a valid email."}
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          name="password"
+          onBlur={() => handleInputValidation("password")}
+          onChange={(evt) => handleInputChange("password", evt.target.value)}
+          value={enteredValues.password}
+          error={
+            passwordIsInvalid && "Password must have more than 6 characters."
+          }
+        />
       </div>
 
       <p className="form-actions">
