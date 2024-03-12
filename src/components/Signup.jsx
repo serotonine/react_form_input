@@ -14,6 +14,8 @@ export default function Signup() {
     const _multipleValues = _form.getAll("acquisition");
     // Add it to the rest.
     _values.acquisition = _multipleValues;
+    // Native method reset.
+    evt.target.reset();
 
     console.log(_values);
   }
