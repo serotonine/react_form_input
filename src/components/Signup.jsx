@@ -1,7 +1,11 @@
+import { useState } from "react";
 export default function Signup() {
+  const [isMatchPwd, setIsMatchPwd] = useState(true);
   // Submit
   function handleSubmit(evt) {
     evt.preventDefault();
+    // Reset
+    setIsMatchPwd(true);
     // Use native feature.
     // All input elements must have the prop 'name'.
     const _form = new FormData(evt.target);
@@ -14,11 +18,18 @@ export default function Signup() {
     const _multipleValues = _form.getAll("acquisition");
     // Add it to the rest.
     _values.acquisition = _multipleValues;
+    // VALIDATION //
+    if (_values.password !== _values["confirm-password"]) {
+      setIsMatchPwd(false);
+      return;
+    }
     // Native method reset.
     evt.target.reset();
-    // VALIDATION BUILT IN //
 
     console.log(_values);
+  }
+  function handlePwdFocus() {
+    setIsMatchPwd(true);
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -39,6 +50,7 @@ export default function Signup() {
             name="password"
             required
             minLength={8}
+            onFocus={handlePwdFocus}
           />
         </div>
 
@@ -50,7 +62,11 @@ export default function Signup() {
             name="confirm-password"
             required
             minLength={8}
+            onFocus={handlePwdFocus}
           />
+          {!isMatchPwd && (
+            <div className="control-error">Passwords must match!</div>
+          )}
         </div>
       </div>
 
